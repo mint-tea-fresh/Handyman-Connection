@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jobber-hermes-mcp"
+version = "0.1.0"
+description = "Private read-only Jobber reporting connector for Hermes Agent"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary" }
+dependencies = [
+  "cryptography==45.0.6",
+  "httpx==0.28.1",
+  "mcp==2.2.0",
+  "psycopg[binary]==3.2.9",
+  "python-dotenv==1.1.1",
+  "sqlalchemy==2.0.43",
+  "uvicorn==0.35.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.4.1",
+  "pytest-asyncio==1.1.0",
+  "pytest-cov==6.2.1",
+  "ruff==0.12.9",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jobber_mcp"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "ASYNC"]
+ignore = ["S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S105", "S106"]
+
+[tool.coverage.run]
+branch = true
+source = ["jobber_mcp"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 85
